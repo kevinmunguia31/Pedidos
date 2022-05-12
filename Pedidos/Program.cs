@@ -42,7 +42,7 @@ namespace Pedidos
             Cliente _cliente = new Cliente();
             bool salir = false;
             MySqlDataReader reader = null;
-            string sql = "";
+            string sql;
 
             while (!salir) 
             {
@@ -151,22 +151,173 @@ namespace Pedidos
                         Console.Clear();
                         break;
                     case 4:
+                        Console.Clear();
                         Console.WriteLine("\t\tRegistro de Cliente:\r");
                         Console.WriteLine("------------------------\n");
                         Console.WriteLine("\n");
-                        Console.WriteLine("Ingrese el Nombre del Cliente: \n");
-                        _cliente.Nombre = Console.ReadLine();
+
+                        String res;
+
+                        do
+                        {
+                            Console.WriteLine("Nombre: ");
+                            _cliente.Nombre = Console.ReadLine();
+
+                            Console.WriteLine("Apellido: ");
+                            _cliente.Apellido = Console.ReadLine();
+
+                            Console.WriteLine("Direccion: ");
+                            _cliente.Direccion = Console.ReadLine();
+
+                            Console.WriteLine("Foto: ");
+                            _cliente.Foto = Console.ReadLine();
+
+                            Console.WriteLine("Edad: ");
+                            _cliente.Edad = int.Parse(Console.ReadLine());
+
+                            Console.WriteLine("Salario: ");
+                            _cliente.Salario = float.Parse(Console.ReadLine());
+
+                            //Console.WriteLine(_cliente.Nombre + _cliente.Apellido + _cliente.Direccion + _cliente.Foto + _cliente.Edad + _cliente.Salario);
+
+                            /////////////////INSERCION DE LOS DATOS////////////////////////////////////
+
+                            sql = "Insert into cliente(nombre, apellido, direccion, foto, edad, salario) Values('" + _cliente.Nombre + "', '" + _cliente.Apellido + "', '" + _cliente.Direccion + "', '" + _cliente.Foto + "', '" + _cliente.Edad + "', '" + _cliente.Salario + "')";
+                           
+                            try
+                            {
+                                connect();
+                                MySqlCommand comando = new MySqlCommand(sql, conn);
+                                comando.ExecuteNonQuery();
+                                Console.WriteLine("Cliente Registrado con Exito!");
+                            }
+                            catch (MySqlException ex) 
+                            {
+                                Console.WriteLine(ex.Message.ToString());
+                            }
+
+                            //////////////////////////////////////////////////////////
+                            Console.WriteLine("Desea Registrar otro Cliente?(Si/No) ");
+                            res = Console.ReadLine();
+                            Console.Clear();
+
+
+                        } while (res != "No");
+                        
+
+                        Console.WriteLine("Presione Enter Para volver al menu");
+                        Console.ReadKey();
                         Console.Clear();
                         break;
                     case 5:
+                        Console.Clear();
                         Console.WriteLine("\t\tRegistro de Pedidos:\r");
                         Console.WriteLine("------------------------\n");
                         Console.WriteLine("\n");
+
+                        string fecha;
+                        int cant, cod_cliente, cod_articulo;
+                        float precio_total;
+
+                        do
+                        {
+                            Console.WriteLine("Codigo del Cliente: ");
+                            cod_cliente = int.Parse(Console.ReadLine());
+
+                            Console.WriteLine("Codigo del Articulo: ");
+                            cod_articulo = int.Parse(Console.ReadLine());
+
+                            Console.WriteLine("Cantidad: ");
+                            cant = int.Parse(Console.ReadLine());
+
+                            Console.WriteLine("Precio Total: ");
+                            precio_total = float.Parse(Console.ReadLine());
+
+                            Console.WriteLine("Fecha(YY-MM-DD): ");
+                            fecha = Console.ReadLine();
+
+                            /////////////////INSERCION DE LOS DATOS////////////////////////////////////
+
+                            sql = "Insert into pedido(cod_cliente, cod_articulo, cantidad, precio_total, fecha) Values('" + cod_cliente + "', '" + cod_articulo + "', '" + cant + "', '" + precio_total + "', '" + fecha + "')";
+
+                            try
+                            {
+                                connect();
+                                MySqlCommand comando = new MySqlCommand(sql, conn);
+                                comando.ExecuteNonQuery();
+                                Console.WriteLine("Pedido Realizado con Exito!");
+                            }
+                            catch (MySqlException ex)
+                            {
+                                Console.WriteLine(ex.Message.ToString());
+                            }
+
+                            //////////////////////////////////////////////////////////
+                            Console.WriteLine("Desea Realizar otro Pedido?(Si/No) ");
+                            res = Console.ReadLine();
+                            Console.Clear();
+
+
+                        } while (res != "No");
+
                         break;
                     case 6:
+                        Console.Clear();
                         Console.WriteLine("\t\tRegistro de Articulos:\r");
                         Console.WriteLine("------------------------\n");
                         Console.WriteLine("\n");
+
+                        string nombre, marca, modelo;
+                        int cantidad;
+                        float precio;
+
+                        do
+                        {
+                            Console.WriteLine("Nombre: ");
+                            nombre = Console.ReadLine();
+
+                            Console.WriteLine("Marca: ");
+                            marca = Console.ReadLine();
+
+                            Console.WriteLine("Modelo: ");
+                            modelo = Console.ReadLine();
+
+                            Console.WriteLine("Precio: ");
+                            precio = float.Parse(Console.ReadLine());
+
+                            Console.WriteLine("Cantidad: ");
+                            cantidad = int.Parse(Console.ReadLine());
+
+
+                            /////////////////INSERCION DE LOS DATOS////////////////////////////////////
+
+                            sql = "Insert into articulos(nombre, marca, modelo, precio, cantidad) Values('" + nombre + "', '" + marca + "', '" + modelo + "', '" + precio + "', '" + cantidad + "')";
+
+                            try
+                            {
+                                connect();
+                                MySqlCommand comando = new MySqlCommand(sql, conn);
+                                comando.ExecuteNonQuery();
+                                Console.WriteLine("Articulo Registrado con Exito!");
+                            }
+                            catch (MySqlException ex)
+                            {
+                                Console.WriteLine(ex.Message.ToString());
+                            }
+
+                            //////////////////////////////////////////////////////////
+                            Console.WriteLine("Desea Registrar otro Articulo?(Si/No) ");
+                            res = Console.ReadLine();
+                            Console.Clear();
+
+
+                        } while (res != "No");
+
+
+                        Console.WriteLine("Presione Enter Para volver al menu");
+                        Console.ReadKey();
+                        Console.Clear();
+
                         break;
                     case 7:
                         Environment.Exit(0);
@@ -179,14 +330,6 @@ namespace Pedidos
                         break;
                 }
             }
-
-
-
-            // Primer Menu de Opciones
-            
-            // Wait for the user to respond before closing.
-            Console.Write("Presione cualquier tecla para salir");
-            Console.ReadKey();
         }
     }
 }

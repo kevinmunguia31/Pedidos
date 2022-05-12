@@ -11,6 +11,8 @@ namespace Pedidos
         private int codigo;
         private String nombre;
         private String apellido;
+        private String direccion;
+        private String foto;
         private int edad;
         private float salario;
 
@@ -19,5 +21,7 @@ namespace Pedidos
         public string Apellido { get => apellido; set => apellido = value; }
         public int Edad { get => edad; set => edad = value; }
         public float Salario { get => salario; set => salario = value; }
+        public string Direccion { get => direccion; set => direccion = value; }
+        public string Foto { get => foto; set => foto = value; }
     }
 }
