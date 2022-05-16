@@ -55,7 +55,9 @@ namespace Pedidos
                 Console.WriteLine("\t4 - Registrar Clientes");
                 Console.WriteLine("\t5 - Registrar Pedidos");
                 Console.WriteLine("\t6 - Registrar Articulos");
-                Console.WriteLine("\t7 - Salir");
+                Console.WriteLine("\t7 - Eliminar Articulo");
+                Console.WriteLine("\t8 - Buscar Articulo");
+                Console.WriteLine("\t9 - Salir");
                 Console.Write("Opcion? ");
                 op = Convert.ToInt32(Console.ReadLine());
 
@@ -320,8 +322,89 @@ namespace Pedidos
 
                         break;
                     case 7:
+                        Console.Clear();
+                        Console.WriteLine("\t\tEliminar un Articulo\r");
+                        Console.WriteLine("\t\t------------------------\n");
+
+                        sql = "Select * from articulos";
+                        try
+                        {
+                            connect();
+                            MySqlCommand comando = new MySqlCommand(sql, conn);
+                            reader = comando.ExecuteReader();
+                            if (reader.HasRows)
+                            {
+                                Console.WriteLine("------------------------------------------------------------------------------------------------");
+                                Console.WriteLine("Codigo\t Nombre\t Marca\t Modelo\t Precio\t Cantidad");
+                                Console.WriteLine("------------------------------------------------------------------------------------------------");
+                                while (reader.Read())
+                                {
+                                    Console.WriteLine("|" + reader.GetString(0) + " |   " + reader.GetString(1) + " |   " + reader.GetString(2) + " |   " + reader.GetString(3) + " |    " + reader.GetString(4) + " |  " + reader.GetString(5) + " |");
+                                    Console.WriteLine("------------------------------------------------------------------------------------------------");
+                                }
+                            }
+
+                        }
+                        catch (MySqlException ex) { Console.WriteLine(ex.Message.ToString()); }
+
+
+                        //ELIMINAR EL PRODUCTO
+                        Console.WriteLine("\n\nEscriba el ID del produucto que desea elimina: ");
+                        int borrar_articulo = int.Parse(Console.ReadLine());
+
+                        sql = "DELETE FROM Articulos WHERE Codigo = " + borrar_articulo + ";";
+                        try
+                        {
+                            connect();
+                            MySqlCommand comando = new MySqlCommand(sql, conn);
+                            comando.ExecuteNonQuery();
+                            Console.WriteLine("Articulo eliminado con Exito!");
+                        }
+                        catch (MySqlException ex)
+                        {
+                            Console.WriteLine(ex.Message.ToString());
+                        }
+                        Console.WriteLine("Presione Enter Para volver al menu");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+
+                    case 8:
+                        //BUSCAR EL PRODUCTO
+                        Console.WriteLine("\n\nIngrese el nombre del articulo que deseea buscar: ");
+                        string art_nombre = Console.ReadLine();
+
+                        sql = "SELECT * FROM Articulos WHERE Nombre =  '" + art_nombre + "';";
+                        try
+                        {
+                            connect();
+                            MySqlCommand comando = new MySqlCommand(sql, conn);
+                            reader = comando.ExecuteReader();
+                            if (reader.HasRows)
+                            {
+                                Console.WriteLine("------------------------------------------------------------------------------------------------");
+                                Console.WriteLine("Codigo\t Nombre\t Marca\t Modelo\t Precio\t Cantidad");
+                                Console.WriteLine("------------------------------------------------------------------------------------------------");
+                                while (reader.Read())
+                                {
+                                    Console.WriteLine("|" + reader.GetString(0) + " |   " + reader.GetString(1) + " |   " + reader.GetString(2) + " |   " + reader.GetString(3) + " |    " + reader.GetString(4) + " |  " + reader.GetString(5) + " |");
+                                    Console.WriteLine("------------------------------------------------------------------------------------------------");
+                                }
+                            }
+                        }
+                        catch (MySqlException ex)
+                        {
+                            Console.WriteLine(ex.Message.ToString());
+                        }
+                        Console.WriteLine("Presione Enter Para volver al menu");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+
+                    case 9:
                         Environment.Exit(0);
                         break;
+
                     default:
                         Console.WriteLine("Ingrese una opcion entre 1 y 7 \n");
                         Console.WriteLine("Cargando menu...");
